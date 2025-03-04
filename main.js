@@ -1,5 +1,5 @@
 import { ce, div, input, th } from "./utils/createElement.js";
-
+const url="https://rawcdn.githack.com/akabab/superhero-api/0.2.0/api/all.json"
 const columnNames = [
   "Icon",
   "Name",
@@ -13,8 +13,10 @@ const columnNames = [
   "Alignment",
 ];
 
-const Table = (heroes) =>
-  div("container").append(
+const Table = (heroes) => {
+  console.log(heroes);
+
+  return div("container").append(
     div("title", "Sortable"),
     div("header").append(
       input("search", "find your hero"),
@@ -22,22 +24,14 @@ const Table = (heroes) =>
     ),
     ce("table").append(
       ce("thead").append(ce("tr").append(...columnNames.map(th))),
-      ce("tbody").append()
+      ce("tbody").append(...heroes.map)
     )
   );
-
-async function fetchdata() {
-  const respone = await fetch(
-    "https://rawcdn.githack.com/akabab/superhero-api/0.2.0/api/all.json"
-  );
-  if (!respone.ok) {
-  }
-  const data = await respone.json();
-  console.log(data);
 }
 
 const main = () => {
-  document.body.append(Table());
+  fetch(url).then(resp=>resp.json()).then(data=>document.body.append(Table(data)))
+  
 };
 
 main();
